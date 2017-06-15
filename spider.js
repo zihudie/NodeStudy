@@ -48,7 +48,7 @@ const server = http.createServer((req, res) => {
           })
   };
   var offsets = [];
-  for(var i = 0; i < 3; i++) {
+  for(var i = 0; i < 13; i++) {
     offsets.push(i * 5);
   }
   async.mapLimit(offsets, 5, function (offset, callback) {
