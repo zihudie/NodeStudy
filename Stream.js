@@ -25,6 +25,7 @@
 // });
 //
 // server.listen(1337);
+// 可读流设定setEncoding；process.stdin.setEncoding('utf8');
 const fs = require('fs');
 const rr = fs.createReadStream('./test.txt');
 const writable = fs.createWriteStream('./file1.txt');
