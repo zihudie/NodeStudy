@@ -16,10 +16,11 @@ const server = http.createServer((req, res) => {
     superagent.get(baseUrl)
           .set({
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
-            'Referrer': 'www.baidu.com'
+            'Referrer': 'www.baidu.com',
+            'Content-Type': 'text/plain; charset=UTF-8'
           })
           .query({
-            params: params
+            params: JSON.stringify(params)
           })
           .end(function(err, obj) {
             if(err) return null
@@ -37,7 +38,6 @@ const server = http.createServer((req, res) => {
                 author: author
               })
             })
-            res.end(JSON.stringify(items))
             count--
             console.log('释放了并发数后，当前并发数：', count)
             callback(null, JSON.stringify(items))
@@ -50,7 +50,7 @@ const server = http.createServer((req, res) => {
   async.mapLimit(offsets, 5, function (offset, callback) {
     fetchUrl(offset, callback);
   }, function (err, result) {
-    res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf8' });
+    res.writeHead(200, { 'Content-Type': 'text/plain; charset=UTF-8' });
     res.end(JSON.stringify(result))
   });
 }).listen(9090)
