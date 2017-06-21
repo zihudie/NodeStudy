@@ -14,7 +14,8 @@ http.createServer(function(req,res){
               var file = fs.statSync(fsPath) //文件信息
               var lastModified = file.mtime.toUTCString()
               var ifModifiedSince = req.headers['if-modified-since']
-              var maxAgeTime = 3
+              //传回Last-Modified后，再请求服务器会携带if-modified-since值来和服务器中的Last-Modified比较
+              var maxAgeTime = 3 //设置超时时间
               if(ifModifiedSince && lastModified == ifModifiedSince) { //客户端修改时间和服务端修改时间对比
                   res.writeHead(304,"Not Modified")
                   res.end()
