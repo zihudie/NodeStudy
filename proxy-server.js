@@ -74,6 +74,7 @@ var server = http.createServer((req, res) => {
 		var md5Str = md5(str)
 		console.log('md5Str', md5Str)
 		var baseUrl = 'bbs-dev.laohu.com/api/laohuapp/index.php'
+		console.log('data',getData(post, [{key: 'sign', value: md5Str}, {key: 'access_token', value: access_toekn}]))
 		superagent.post(baseUrl)
 			.query(getData(post, [{key: 'sign', value: md5Str}, {key: 'access_token', value: access_toekn}]))
 			.end((err, obj) => {
