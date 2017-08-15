@@ -4,15 +4,20 @@
 var http = require('http')
 var superagent = require('superagent')
 var url = require('url');
-var { userthreadflow, login } = require('./requestOptions.js');
+var { userthreadflow, mythreadflow, login } = require('./requestOptions.js');
 var { sign } = require('./sign.js')
 var hostUrl = '127.0.0.1:9088'
 
 var server = http.createServer((req, res) => {
-	var pathname = url.parse(req.url).pathname	
+	var pathname = url.parse(req.url).pathname
+	var query = parseQuery(url.parse(req.url).query)	
 	switch(pathname) {
 		case '/userthreadflow':
+				userthreadflow['uid'] = query.uid
 				proxyHost(userthreadflow, true, res)
+			break
+		case '/mythreadflow':
+				proxyHost(mythreadflow, true, res)
 			break
 	}
 }).listen(3000)
@@ -27,7 +32,7 @@ function proxyHost(data, isLogin, res) {
 					var token = JSON.parse(obj.text).result.token
 					data['access_token'] = token
 					data['sign'] = sign(data, 'bbs')
-					data['user_id'] = '24285456'
+					data['uid'] = '1'
 					superagent.post(hostUrl)
 						.send(data)
 						.end((err, obj) => {
@@ -39,4 +44,12 @@ function proxyHost(data, isLogin, res) {
 		})
 	} 
 }
-proxyHost()
+function parseQuery(query) {
+	if(!query) return null
+	var arr = query.split('&')
+	var	obj = {}
+	arr.forEach((item) => {
+		obj[item.split('=')[0]] = item.split('=')[1]
+	})
+	return obj
+}
