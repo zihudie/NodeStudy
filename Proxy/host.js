@@ -20,6 +20,4 @@ var server = http.createServer((req, res) => {
 				res.end(unescape(obj.text.replace(/\\u/g, '%u')))
 			})
 	})
-	
-	
 }).listen(9088)

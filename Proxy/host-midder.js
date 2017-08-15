@@ -16,8 +16,8 @@ var server = http.createServer((req, res) => {
 			break
 	}
 }).listen(3000)
-function proxyHost(data, isNeedSign, res) {
-	if(isNeedSign) {
+function proxyHost(data, isLogin, res) {
+	if(isLogin) {
 		login['sign'] = sign(login, 'login')
 		superagent.post(hostUrl)
 		.send(login)
@@ -27,6 +27,7 @@ function proxyHost(data, isNeedSign, res) {
 					var token = JSON.parse(obj.text).result.token
 					data['access_token'] = token
 					data['sign'] = sign(data, 'bbs')
+					data['user_id'] = '24285456'
 					superagent.post(hostUrl)
 						.send(data)
 						.end((err, obj) => {
@@ -35,12 +36,7 @@ function proxyHost(data, isNeedSign, res) {
 				} else {
 					console.log('请求失败:', JSON.parse(obj.text).message)
 				}
-			
-			
 		})
-	} else {
-		
-	}
-	
+	} 
 }
 proxyHost()
