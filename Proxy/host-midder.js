@@ -32,7 +32,6 @@ function proxyHost(data, isLogin, res) {
 					var token = JSON.parse(obj.text).result.token
 					data['access_token'] = token
 					data['sign'] = sign(data, 'bbs')
-					data['uid'] = '1'
 					superagent.post(hostUrl)
 						.send(data)
 						.end((err, obj) => {
